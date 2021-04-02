@@ -8,31 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
-        String host_ip = args[0];
-        int portnum = Integer.parseInt(args[1]);
-
-//        Graph graph1 = Util.readGraph("1_$cost.txt");
-//        Graph graph2 = Util.readGraph("1_time.txt");
-
-
-        List<Integer> results = runDijkstra(null, null, 2, host_ip, portnum);
-
+    public static void main(String[] args) throws InterruptedException, IOException {
+//        String host_ip = args[0];
+//        int portnum = Integer.parseInt(args[1]);
+        Graph graph = Util.readGraph("./input.txt");
+        int result = runDijkstra(graph, null, 2, "test", 1);
+        System.out.println("Result: " + result);
 //        Util.writeResults("singleoutput.txt", results, 0);
     }
 
-    private static List<Integer> runDijkstra(Graph graph1, Graph graph2, int numThreads, String host_ip, int portnum) {
+    private static int runDijkstra(Graph graph1, Graph graph2, int numThreads, String host_ip, int portnum) throws InterruptedException {
         Dijkstra dijkstra = new Dijkstra();
 
-        try {
-            Socket s = new Socket(host_ip, portnum);
-            System.out.println("Connection establish with " + host_ip + "::" + portnum);
-            network_runalgo(graph1, graph2, numThreads, s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-//        return dijkstra.runAlgo(graph1, numThreads);
+//        try {
+//            Socket s = new Socket(host_ip, portnum);
+//            System.out.println("Connection establish with " + host_ip + "::" + portnum);
+//            network_runalgo(graph1, graph2, numThreads, s);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        return dijkstra.runAlgo(graph1, numThreads, 3);
 
     }
 

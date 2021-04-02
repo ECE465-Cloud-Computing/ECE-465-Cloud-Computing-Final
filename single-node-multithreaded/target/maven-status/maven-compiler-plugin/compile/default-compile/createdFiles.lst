@@ -5,4 +5,6 @@ edu\cooper\ece465\Dijkstra.class
 edu\cooper\ece465\Util.class
 edu\cooper\ece465\Graph.class
 edu\cooper\ece465\GenerateGraph.class
+edu\cooper\ece465\CoordinatorMain.class
 edu\cooper\ece465\Node.class
+edu\cooper\ece465\Coordinator.class

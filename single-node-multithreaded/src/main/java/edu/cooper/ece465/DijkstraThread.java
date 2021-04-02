@@ -14,18 +14,20 @@ public class DijkstraThread extends Thread{
     private Set<Integer> visitedNodes;
     private PriorityQueue<Node> nodeQueue;
     private List<Integer> nodeDistances;
+    private List<Integer> prevNode;
     private Node minNode;
     private CyclicBarrier barrier;
     private AtomicBoolean isFinished;
 
 
-    public DijkstraThread(Graph graph, int startNode, int endNode, Set<Integer> visitedNodes, PriorityQueue<Node> nodeQueue, List<Integer> nodeDistances, Node minNode, CyclicBarrier barrier, AtomicBoolean isFinished) {
+    public DijkstraThread(Graph graph, int startNode, int endNode, Set<Integer> visitedNodes, PriorityQueue<Node> nodeQueue, List<Integer> nodeDistances, List<Integer> prevNode, Node minNode, CyclicBarrier barrier, AtomicBoolean isFinished) {
         this.graph = graph;
         this.startNode = startNode;
         this.endNode = endNode;
         this.visitedNodes = visitedNodes;
         this.nodeQueue = nodeQueue;
         this.nodeDistances = nodeDistances;
+        this.prevNode = prevNode;
         this.minNode = minNode;
         this.barrier = barrier;
         this.isFinished = isFinished;
@@ -44,6 +46,7 @@ public class DijkstraThread extends Thread{
                     int newDistance = currDistance + currNeighbors.get(i);
                     if (newDistance < nodeDistances.get(i)) {
                         nodeDistances.set(i, newDistance);
+                        prevNode.set(i, currNode);
                         nodeQueue.add(new Node(i, newDistance));
                     }
                 }

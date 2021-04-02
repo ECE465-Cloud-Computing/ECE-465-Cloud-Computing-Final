@@ -22,7 +22,6 @@ public class Coordinator {
 
                 dataOutputStream.writeUTF("Hello from the server");
                 dataOutputStream.flush();
-                dataOutputStream.close();
 
                 String message = dataInputStream.readUTF();
                 System.out.println("Message received from worker was: " + message);
