@@ -9,15 +9,17 @@ public class Dijkstra {
     private Node currNode;
     private List<Integer> nodeDistances;
     private Set<Integer> visitedNodes = new HashSet<>();
+    private List<Integer> prevNode;
     // Using an atomicboolean mutable so we can change the value in the threads
     private AtomicBoolean isFinished;
     private List<PriorityQueue<Node>> nodeQueue = new ArrayList<>();
 
-    public List<Integer> runAlgo(Graph graph, int numThreads) throws InterruptedException {
+    public int runAlgo(Graph graph, int numThreads, int end) throws InterruptedException {
         // Init vars
         this.graph = graph;
         isFinished = new AtomicBoolean(false);
         nodeDistances = new ArrayList<>(graph.getNumNodes());
+        prevNode = new ArrayList<>(graph.getNumNodes());
         currNode = new Node(graph.getSourceNode(), 0);
         // Init threads + queues for threads
         List<Thread> threads = new ArrayList<>();
@@ -26,13 +28,16 @@ public class Dijkstra {
             nodeQueue.add(threadQueue);
         }
         // Preset distances to infinity
-        for (int i = 0; i < graph.getNumNodes(); i++)
+        for (int i = 0; i < graph.getNumNodes(); i++) {
             nodeDistances.add(i, Integer.MAX_VALUE);
+            prevNode.add(i, -1);
+        }
+
         // Set starting node distance to 0
         nodeDistances.set(graph.getSourceNode(), 0);
 
         // Find min node once the threads have finished one iteration of Dijkstra's using await
-        FindMinNode findMinNode = new FindMinNode(nodeQueue, isFinished, visitedNodes, currNode);
+        FindMinNode findMinNode = new FindMinNode(nodeQueue, isFinished, visitedNodes, currNode, end);
         CyclicBarrier cyclicBarrier = new CyclicBarrier(numThreads, findMinNode);
         // Break up graph and distribute among threads
         int subgraphSize = graph.getNumNodes() / numThreads;
@@ -51,7 +56,7 @@ public class Dijkstra {
 
             // Create new thread and run dijkstra on subgraph
             Thread DThread = new DijkstraThread(graph, startNode, endNode, visitedNodes, nodeQueue.get(i), nodeDistances,
-                    currNode, cyclicBarrier, isFinished);
+                    prevNode, currNode, cyclicBarrier, isFinished);
             DThread.start();
             // Add new thread to queue
             threads.add(DThread);
@@ -63,7 +68,16 @@ public class Dijkstra {
         for (int i = 0; i < numThreads; i++){
             threads.get(i).join();
         }
-        return nodeDistances;
+
+        int start = end;
+        StringBuilder path = new StringBuilder();
+        while (start > 0) {
+            path.insert(0, start + " ");
+            start = prevNode.get(start);
+        }
+        path.insert(0, graph.getSourceNode() + " ");
+        System.out.println(path);
+        return nodeDistances.get(end);
     }
 
     public static class FindMinNode implements Runnable {
@@ -72,12 +86,14 @@ public class Dijkstra {
         private AtomicBoolean isFinished;
         private Set<Integer> visitedNodes;
         private Node currNode;
+        private int endNode;
 
-        public FindMinNode(List<PriorityQueue<Node>> nodeQueue, AtomicBoolean isFinished, Set<Integer> visitedNodes, Node currNode) {
+        public FindMinNode(List<PriorityQueue<Node>> nodeQueue, AtomicBoolean isFinished, Set<Integer> visitedNodes, Node currNode, int endNode) {
             this.nodeQueue = nodeQueue;
             this.isFinished = isFinished;
             this.visitedNodes = visitedNodes;
             this.currNode = currNode;
+            this.endNode = endNode;
         }
 
         @Override
@@ -98,7 +114,7 @@ public class Dijkstra {
                     }
                 }
                 // if minNode not found b/c queues are empty, the algorithm is finished
-                if (minNode == null){
+                if (minNode == null || minNode.getNode() == endNode){
                     isFinished.set(true);
                     return;
                 }
