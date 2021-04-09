@@ -14,13 +14,13 @@ public class Dijkstra {
     private AtomicBoolean isFinished;
     private List<PriorityQueue<Node>> nodeQueue = new ArrayList<>();
 
-    public int runAlgo(Graph graph, int numThreads, int end) throws InterruptedException {
+    public WorkerToCoordinatorMessage runAlgo(Graph graph, int numThreads, int startNode, int endNode) throws InterruptedException {
         // Init vars
         this.graph = graph;
         isFinished = new AtomicBoolean(false);
         nodeDistances = new ArrayList<>(graph.getNumNodes());
         prevNode = new ArrayList<>(graph.getNumNodes());
-        currNode = new Node(graph.getSourceNode(), 0);
+        currNode = new Node(startNode, 0);
         // Init threads + queues for threads
         List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < numThreads; i++) {
@@ -34,50 +34,50 @@ public class Dijkstra {
         }
 
         // Set starting node distance to 0
-        nodeDistances.set(graph.getSourceNode(), 0);
+        nodeDistances.set(startNode, 0);
 
         // Find min node once the threads have finished one iteration of Dijkstra's using await
-        FindMinNode findMinNode = new FindMinNode(nodeQueue, isFinished, visitedNodes, currNode, end);
+        FindMinNode findMinNode = new FindMinNode(nodeQueue, isFinished, visitedNodes, currNode, endNode);
         CyclicBarrier cyclicBarrier = new CyclicBarrier(numThreads, findMinNode);
         // Break up graph and distribute among threads
         int subgraphSize = graph.getNumNodes() / numThreads;
         int excessNodes = graph.getNumNodes() % numThreads;
         // Init vars
-        int startNode = 0;
-        int endNode;
+        int start = 0;
+        int end;
         // Create + Start threads
         for (int i = 0; i < numThreads; i++) {
-            endNode = startNode + subgraphSize;
+            end = start + subgraphSize;
             // if there are excess nodes after distributing, then some subgraphs get one node until all excess nodes gone
             if (excessNodes > 0) {
-                endNode = endNode + 1;
+                end = end + 1;
                 excessNodes = excessNodes - 1;
             }
 
             // Create new thread and run dijkstra on subgraph
-            Thread DThread = new DijkstraThread(graph, startNode, endNode, visitedNodes, nodeQueue.get(i), nodeDistances,
+            Thread DThread = new DijkstraThread(graph, start, end, visitedNodes, nodeQueue.get(i), nodeDistances,
                     prevNode, currNode, cyclicBarrier, isFinished);
             DThread.start();
             // Add new thread to queue
             threads.add(DThread);
 
             // Update startNode to w/e endNode was w/ one node overlap in new subgraphs to later connect them together
-            startNode = endNode;
+            start = end;
         }
         // Sync threads
         for (int i = 0; i < numThreads; i++){
             threads.get(i).join();
         }
 
-        int start = end;
-        StringBuilder path = new StringBuilder();
+        start = endNode;
+        List<Integer> path = new ArrayList<>();
         while (start > 0) {
-            path.insert(0, start + " ");
+            path.add(start);
             start = prevNode.get(start);
         }
-        path.insert(0, graph.getSourceNode() + " ");
+        path.add(startNode);
         System.out.println(path);
-        return nodeDistances.get(end);
+        return new WorkerToCoordinatorMessage("", path, nodeDistances.get(endNode));
     }
 
     public static class FindMinNode implements Runnable {
