@@ -6,6 +6,7 @@ source ./load_lab_config.sh
 NOW=$(date '+%Y%m%d%H%M%S')
 LOGFILE="./run-${NOW}.log"
 
+
 echo "Running Full AWS infrastructure for ${APP_TAG_NAME}:${APP_TAG_VALUE}" | tee ${LOGFILE}
 echo "Running run.sh at ${NOW}" | tee -a ${LOGFILE}
 
@@ -29,13 +30,14 @@ echo "${NUM_IPS}"
 
 echo "${PRIVATE_IPS_ARRAY[0]}"
 
-exit 0
+
+
 for ((i = 0 ; i < NUM_IPS-1 ; i++)); do
   echo "Running ${PROG} at ${USER}@${INSTANCES_IPS_ARRAY[${i}]}:~/ ..." | tee -a ${LOGFILE}
-	(ssh -i ${KEY_FILE} ${USER}@${INSTANCES_IPS_ARRAY[${i}]} "java -cp ${PROG} edu.cooper.ece465.Main 6666" | tee -a ${LOGFILE}) & disown %1
+	(ssh -i ${KEY_FILE} ${USER}@${INSTANCES_IPS_ARRAY[${i}]} "java -cp ${PROG} edu.cooper.ece465.WorkerMain 6666 ${AIRLINES[${i}]}" | tee -a ${LOGFILE}) & disown %1
 #	ssh -n -f user@host "sh -c 'nohup java -cp ${PROG} edu.cooper.ece465.Main 6666 > /dev/null 2>&1 &'"
 done
-ssh -i ${KEY_FILE} ${USER}@${INSTANCES_IPS_ARRAY[${NUM_IPS}-1]} "java -cp ${PROG} edu.cooper.ece465.CoordinatorMain 6666 ${PRIVATE_IPS_ARRAY[0]} ${PRIVATE_IPS_ARRAY[1]}" | tee -a ${LOGFILE}
+ssh -i ${KEY_FILE} ${USER}@${INSTANCES_IPS_ARRAY[${NUM_IPS}-1]} "java -cp ${PROG} edu.cooper.ece465.CoordinatorMain 6666 ${PRIVATE_IPS_ARRAY[0]} ${PRIVATE_IPS_ARRAY[1]} ${PRIVATE_IPS_ARRAY[2]} ${PRIVATE_IPS_ARRAY[3]}" | tee -a ${LOGFILE}
 
 echo "Done." | tee -a ${LOGFILE}
 
