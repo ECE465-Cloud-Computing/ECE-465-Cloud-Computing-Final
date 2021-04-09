@@ -1,0 +1,4 @@
+AIRLINES=("A" "B" "C" "D")
+INSTANCES_COUNT=$(((${#AIRLINES[@]})+1))
+echo "${INSTANCES_COUNT}"
+echo "${AIRLINES[1]}"

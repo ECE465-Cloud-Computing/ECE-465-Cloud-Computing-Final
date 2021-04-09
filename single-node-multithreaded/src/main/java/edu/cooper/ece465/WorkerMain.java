@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class WorkerMain {
@@ -20,8 +21,8 @@ public class WorkerMain {
         int portnum = Integer.parseInt(args[0]);
         String airline = args[1];
 
-        moneyGraph = Util.readGraph("1_money.txt");
-        timeGraph = Util.readGraph("1_time.txt");
+        moneyGraph = Util.readGraph(airline.toUpperCase(Locale.ROOT)+"_money.txt");
+        timeGraph = Util.readGraph(airline.toUpperCase(Locale.ROOT)+"_time.txt");
 
         startServer(portnum, airline);
 
@@ -58,12 +59,12 @@ public class WorkerMain {
 //    }
 
     private static void startServer(int portNumber, String airline) {
-        Dijkstra dijkstra = new Dijkstra();
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("Connection established on port " + portNumber);
 
+                Dijkstra dijkstra = new Dijkstra();
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
@@ -84,7 +85,7 @@ public class WorkerMain {
                 objectOutputStream.writeObject(workerToCoordinatorMessage);
                 objectOutputStream.reset();
 
-                socket.close();
+//                socket.close();
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();

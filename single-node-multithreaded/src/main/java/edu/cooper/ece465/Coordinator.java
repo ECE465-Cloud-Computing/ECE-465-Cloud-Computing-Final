@@ -37,7 +37,7 @@ public class Coordinator {
 
                 WorkerToCoordinatorMessage workerResponse = (WorkerToCoordinatorMessage)objectInputStream.readObject();
                 MsgQueue.add(workerResponse);
-
+                s.close();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
