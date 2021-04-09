@@ -9,9 +9,9 @@ import java.util.Queue;
 public class Coordinator {
     private String[] workerIP;
     private int portNumber;
-    private PriorityQueue<WorkerToCoordinatorMessage> MsgQueue;
+    private PriorityQueue<WorkerToCoordinatorMessage> MsgQueue = new PriorityQueue<>();
     private String filter;
-    private PriorityQueue<WorkerToCoordinatorMessage> bestAirline;
+    private PriorityQueue<WorkerToCoordinatorMessage> bestAirline = new PriorityQueue<>();
     private int start;
     private int end;
 
@@ -37,7 +37,7 @@ public class Coordinator {
 
                 WorkerToCoordinatorMessage workerResponse = (WorkerToCoordinatorMessage)objectInputStream.readObject();
                 MsgQueue.add(workerResponse);
-
+                s.close();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

@@ -6,10 +6,12 @@ public class CoordinatorMain {
         String filter = args[1];
         int start = Integer.parseInt(args[2]);
         int end = Integer.parseInt(args[3]);
-        String[] workerIP = new String[args.length-1];
+        String[] workerIP = new String[args.length-4];
         for(int i=4; i < args.length-1; i++) {
             workerIP[i-4] = args[i];
         }
+
+        System.out.println(workerIP.length);
 
         Coordinator coordinator = new Coordinator(workerIP, portNumber, filter, start, end);
         coordinator.test();

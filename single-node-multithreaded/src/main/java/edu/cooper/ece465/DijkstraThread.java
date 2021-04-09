@@ -35,6 +35,7 @@ public class DijkstraThread extends Thread{
 
     @Override
     public void run() {
+        System.out.println(isFinished.get());
         while(!isFinished.get()) {
             int currNode = minNode.getNode();
             int currDistance = minNode.getDistance();
