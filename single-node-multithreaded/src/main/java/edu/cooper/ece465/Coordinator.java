@@ -3,14 +3,15 @@ package edu.cooper.ece465;
 import java.io.*;
 import java.net.Socket;
 import java.util.Locale;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class Coordinator {
     private String[] workerIP;
     private int portNumber;
-    private Queue<WorkerToCoordinatorMessage> MsgQueue;
+    private PriorityQueue<WorkerToCoordinatorMessage> MsgQueue;
     private String filter;
-    private Queue<WorkerToCoordinatorMessage> bestAirline;
+    private PriorityQueue<WorkerToCoordinatorMessage> bestAirline;
     private int start;
     private int end;
 
@@ -42,23 +43,29 @@ public class Coordinator {
             }
         }
 
-//        If 2 airlines have same  cost then have to include both
-        if (!MsgQueue.isEmpty()) {
-            WorkerToCoordinatorMessage temp;
-            bestAirline.add(MsgQueue.poll());
-            while (!MsgQueue.isEmpty()) {
-                temp = MsgQueue.poll();
-                if (temp.compareTo(bestAirline.peek()) < 0) {
-                    bestAirline.clear();
-                    bestAirline.add(temp);
-                }
-                else if (temp.compareTo(bestAirline.peek()) == 0) {
-                    bestAirline.add(temp);
-                }
-            }
-        }
-        while (!bestAirline.isEmpty()){
-            WorkerToCoordinatorMessage temp = bestAirline.poll();
+//        If 2 airlines have same cost then have to include both
+//        if (!MsgQueue.isEmpty()) {
+//            WorkerToCoordinatorMessage temp;
+//            bestAirline.add(MsgQueue.poll());
+//            while (!MsgQueue.isEmpty()) {
+//                temp = MsgQueue.poll();
+//                if (temp.compareTo(bestAirline.peek()) < 0) {
+//                    bestAirline.clear();
+//                    bestAirline.add(temp);
+//                }
+//                else if (temp.compareTo(bestAirline.peek()) == 0) {
+//                    bestAirline.add(temp);
+//                }
+//            }
+//        }
+//        while (!bestAirline.isEmpty()){
+//            WorkerToCoordinatorMessage temp = bestAirline.poll();
+//            System.out.println(temp.getAirline());
+//            System.out.println(temp.getCost());
+//            System.out.println(temp.getPath());
+//        }
+        while (!MsgQueue.isEmpty()){
+            WorkerToCoordinatorMessage temp = MsgQueue.poll();
             System.out.println(temp.getAirline());
             System.out.println(temp.getCost());
             System.out.println(temp.getPath());
