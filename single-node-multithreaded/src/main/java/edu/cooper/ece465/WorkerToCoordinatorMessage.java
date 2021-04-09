@@ -30,4 +30,16 @@ public class WorkerToCoordinatorMessage implements Comparable<WorkerToCoordinato
     public int getCost() {
         return cost;
     }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
+    }
+
+    public void setPath(List<Integer> path) {
+        this.path = path;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
 }
