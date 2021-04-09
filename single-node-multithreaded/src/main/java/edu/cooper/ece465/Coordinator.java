@@ -7,8 +7,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class Coordinator {
-    private String[] workerIP;
-    private int portNumber;
+    private String workerIP;
+    private int[] portNumber;
     private PriorityQueue<WorkerToCoordinatorMessage> MsgQueue = new PriorityQueue<>();
     private String filter;
     private PriorityQueue<WorkerToCoordinatorMessage> bestAirline = new PriorityQueue<>();
@@ -16,7 +16,7 @@ public class Coordinator {
     private int end;
 
 
-    public Coordinator(String[] workerIP, int portNumber, String filter, int start, int end) {
+    public Coordinator(String workerIP, int[] portNumber, String filter, int start, int end) {
         this.workerIP = workerIP;
         this.portNumber = portNumber;
         this.filter = filter.toUpperCase(Locale.ROOT);
@@ -25,8 +25,8 @@ public class Coordinator {
     }
 
     public void test() {
-        for(String ip : workerIP) {
-            try(Socket s = new Socket(ip, portNumber)) {
+        for(int port : portNumber) {
+            try(Socket s = new Socket(workerIP, port)) {
                 // Setup write to client
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(s.getOutputStream());
                 // Setup read from client
