@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class WorkerMain {
     public static void main(String[] args) {
 //        String host_ip = args[0];
         int portnum = Integer.parseInt(args[0]);
