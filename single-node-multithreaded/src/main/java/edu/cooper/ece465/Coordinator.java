@@ -9,7 +9,7 @@ import java.util.Queue;
 public class Coordinator {
     private String[] workerIP;
     private int portNumber;
-    private PriorityQueue<WorkerToCoordinatorMessage> MsgQueue;
+    private PriorityQueue<WorkerToCoordinatorMessage> MsgQueue = new PriorityQueue<>();
     private String filter;
     private PriorityQueue<WorkerToCoordinatorMessage> bestAirline;
     private int start;
