@@ -9,12 +9,12 @@ public class CoordinatorMain {
         int start = Integer.parseInt(args[2]);
         int end = Integer.parseInt(args[3]);
         String[] workerIP = new String[args.length-4];
-        for(int i=4; i < args.length-1; i++) {
+        for(int i=4; i < args.length; i++) {
             workerIP[i-4] = args[i];
         }
 
         System.out.println(workerIP.length);
-
+        System.out.println(Arrays.toString(workerIP));
         Coordinator coordinator = new Coordinator(workerIP, portNumber, filter, start, end);
         coordinator.test();
 
