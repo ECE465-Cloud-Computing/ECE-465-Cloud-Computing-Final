@@ -16,6 +16,7 @@ public class Coordinator {
     }
 
     public PriorityQueue<WorkerToCoordinatorMessage> runAlgo(String filter, int start, int end) {
+        MsgQueue.clear();
         for(int port : portNumber) {
             try(Socket s = new Socket(workerIP, port)) {
                 // Setup write to client
