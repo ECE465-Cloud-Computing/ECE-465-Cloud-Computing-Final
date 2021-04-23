@@ -5,20 +5,20 @@ import java.net.Socket;
 import java.util.PriorityQueue;
 
 public class Coordinator {
-    private String workerIP;
-    private int[] portNumber;
+    private String[] workerIP;
+    private int portNumber;
     private PriorityQueue<WorkerToCoordinatorMessage> MsgQueue = new PriorityQueue<>();
     private PriorityQueue<WorkerToCoordinatorMessage> bestAirline;
 
-    public Coordinator(String workerIP, int[] portNumber) {
+    public Coordinator(String[] workerIP, int portNumber) {
         this.workerIP = workerIP;
         this.portNumber = portNumber;
     }
 
     public PriorityQueue<WorkerToCoordinatorMessage> runAlgo(String filter, int start, int end) {
         MsgQueue.clear();
-        for(int port : portNumber) {
-            try(Socket s = new Socket(workerIP, port)) {
+        for(String ip : workerIP) {
+            try(Socket s = new Socket(ip, portNumber)) {
                 // Setup write to client
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(s.getOutputStream());
                 // Setup read from client
