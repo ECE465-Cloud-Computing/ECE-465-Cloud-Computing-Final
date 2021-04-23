@@ -17,40 +17,40 @@ public class CoordinatorMain {
     private static Coordinator coordinator;
 
     public static void main(String[] args) throws IOException {
-//        int portNumber = Integer.parseInt(args[0]);
-//        String filter = args[1];
-//        int start = Integer.parseInt(args[2]);
-//        int end = Integer.parseInt(args[3]);
-//        String[] workerIP = new String[args.length-4];
-//        for(int i=4; i < args.length; i++) {
-//            workerIP[i-4] = args[i];
-//        }
+        int portNumber = Integer.parseInt(args[0]);
+        String[] workerIP = new String[args.length-1];
+        for(int i=1; i < args.length; i++) {
+            workerIP[i-1] = args[i];
+        }
 
         //coordinator.test();
 
-        String workerIP = args[0];
-        String filter = args[1];
-        int start = Integer.parseInt(args[2]);
-        int end = Integer.parseInt(args[3]);
-        int[] portNumber = new int[args.length-4];
-        for(int i=4; i < args.length; i++) {
-            portNumber[i-4] = Integer.parseInt(args[i]);
-        }
+//        String workerIP = args[0];
+////        String filter = args[1];
+////        int start = Integer.parseInt(args[2]);
+////        int end = Integer.parseInt(args[3]);
+//        int[] portNumber = new int[args.length-1];
+//        for(int i=1; i < args.length; i++) {
+//            portNumber[i-1] = Integer.parseInt(args[i]);
+//        }
 
-        System.out.println(Arrays.toString(portNumber));
+//        System.out.println(Arrays.toString(portNumber));
         coordinator = new Coordinator(workerIP, portNumber);
 //        coordinator.test();
 
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 5000), 0);
-        server.createContext("/", new MyHttpHandler());
+        server.createContext("/test", new MyHttpHandler());
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         server.setExecutor(threadPoolExecutor);
+        System.out.println("STARTING SERVER");
         server.start();
     }
 
     private static class MyHttpHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) {
+
+            System.out.println("HANDLING RESPONSE");
             if("GET".equals(exchange.getRequestMethod())) {
                 Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
                 handleResponse(exchange, params);
@@ -59,11 +59,17 @@ public class CoordinatorMain {
 
         private void handleResponse(HttpExchange httpExchange, Map<String, String> params) {
             final Headers headers = httpExchange.getResponseHeaders();
-
             Gson gson = new Gson();
-            PriorityQueue<WorkerToCoordinatorMessage> result = coordinator.runAlgo(params.get("filter"), Integer.parseInt(params.get("start")), Integer.parseInt(params.get("end")));
-            String responseString = gson.toJson(result);
+            PriorityQueue<WorkerToCoordinatorMessage> result = coordinator.runAlgo(params.get("filter").toUpperCase(Locale.ROOT), Integer.parseInt(params.get("start")), Integer.parseInt(params.get("end")));
 
+            List<WorkerToCoordinatorMessage> tempList = new ArrayList<>();
+            while (!result.isEmpty()){
+                WorkerToCoordinatorMessage temp = result.poll();
+                tempList.add(temp);
+            }
+
+            String responseString = gson.toJson(tempList);
+            System.out.println(responseString);
             headers.set("Content-Type", String.format("application/json; charset=%s", StandardCharsets.UTF_8));
             final byte[] rawResponseBody = responseString.getBytes(StandardCharsets.UTF_8);
             try {
