@@ -18,12 +18,13 @@ echo "Running create_ec2_in_vpc.sh at ${NOW}" | tee -a ${LOGFILE}
 
 # create the security group for SSH on port 22
 echo "Create the security group for SSH on port 22" | tee -a ${LOGFILE}
-SEC_GROUP_ID=$(aws ec2 create-security-group ${PREAMBLE} --group-name SSHAccess --description "Security group for SSH access" --vpc-id ${VPC_ID} --tag-specifications "ResourceType=security-group,Tags=[{Key=${APP_TYPE},Value=${APP_TYPE_NAME}},{Key=${APP_TAG_NAME},Value=${APP_TAG_VALUE}}]" | jq '.GroupId' | tr -d '"')
+SEC_GROUP_ID=$(aws ec2 create-security-group ${PREAMBLE} --group-name ServerSecurityGroup --description "Security group for SSH access" --vpc-id ${VPC_ID} --tag-specifications "ResourceType=security-group,Tags=[{Key=${APP_TYPE},Value=${APP_TYPE_NAME}},{Key=${APP_TAG_NAME},Value=${APP_TAG_VALUE}}]" | jq '.GroupId' | tr -d '"')
 
 # set the security group for ingress from the Internet
 echo "Set the security group for ingress from the Internet" | tee -a ${LOGFILE}
 aws ec2 authorize-security-group-ingress ${PREAMBLE} --group-id ${SEC_GROUP_ID} --protocol tcp --port 22 --cidr 0.0.0.0/0 | tee ${LOGFILE}
 aws ec2 authorize-security-group-ingress ${PREAMBLE} --group-id ${SEC_GROUP_ID} --protocol all --source-group ${SEC_GROUP_ID} | tee ${LOGFILE}
+aws ec2 authorize-security-group-ingress ${PREAMBLE} --group-id ${SEC_GROUP_ID} --protocol tcp --port 0-65535 --cidr 0.0.0.0/0 | tee ${LOGFILE}
 
 # create the instance(s) with tags
 #INSTANCE_ID=$(aws ec2 run-instances ${PREAMBLE} --image-id ${AMI_ID} --count ${INSTANCES} --instance-type t2.micro --key-name ${KEY_NAME} --security-group-ids ${SEC_GROUP_ID} --subnet-id ${SN_ID_PUBLIC} | jq '.Instances[0].InstanceId' | tr -d '"')
