@@ -19,7 +19,7 @@ for host in ${INSTANCES_IPS}
 do
 	echo "Copying over ${PROG} to ${USER}@${host}:~/ ..." | tee -a ${LOGFILE}
 	scp -i ${KEY_FILE} ${PROG} ${USER}@${host}:~/ | tee -a ${LOGFILE}
-	(ssh -i ${KEY_FILE} ${USER}@${host} "sudo amazon-linux-extras install java-openjdk11" | tee -a ${LOGFILE} & disown %1) > /dev/null 2>&1
+	ssh -i ${KEY_FILE} ${USER}@${host} "sudo amazon-linux-extras install java-openjdk11" | tee -a ${LOGFILE}
 done
 echo "Done." | tee -a ${LOGFILE}
 
