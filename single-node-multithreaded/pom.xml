@@ -46,26 +46,6 @@
           </arguments>
         </configuration>
       </plugin>
-<!--
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
-        <version>1.0-alpha-2</version>
-        <executions>
-          <execution>
-            <phase>initialize</phase>
-            <goals>
-              <goal>read-project-properties</goal>
-            </goals>
-            <configuration>
-              <files>
-                <file>src/main/resources/cubbyHole.properties</file>
-              </files>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
--->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -134,10 +114,6 @@
   </build>
 
   <dependencies>
-<!--    <dependency>-->
-<!--      <groupId>edu.cooper.ece465</groupId>-->
-<!--      <artifactId>commons</artifactId>-->
-<!--    </dependency>-->
     <dependency>
     <!--  junit dependency -->
       <groupId>junit</groupId>
@@ -148,6 +124,11 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.6</version>
     </dependency>
   </dependencies>
 </project>

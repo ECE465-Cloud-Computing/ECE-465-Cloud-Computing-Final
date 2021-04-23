@@ -6,6 +6,8 @@ edu\cooper\ece465\WorkerMain.class
 edu\cooper\ece465\DijkstraThread.class
 edu\cooper\ece465\Dijkstra$FindMinNode.class
 edu\cooper\ece465\Graph.class
+edu\cooper\ece465\CoordinatorMainV2.class
+edu\cooper\ece465\CoordinatorMain$MyHttpHandler.class
 edu\cooper\ece465\CoordinatorMain.class
 edu\cooper\ece465\CoordinatorToWorkerMessage.class
 edu\cooper\ece465\Node.class
