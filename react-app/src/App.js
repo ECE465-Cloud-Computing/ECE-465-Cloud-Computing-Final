@@ -3,10 +3,12 @@ import "./App.css";
 import Home from "./components/Home";
 import Login from './components/Login.js'
 import Register from "./components/Register";
+import Nav from "./components/Nav";
 
 function App() {
     return (
         <Router>
+            <Nav/>
             <Switch>
                 <Route path="/" exact component={Home}/>
                 <Route path="/register" exact component={Register}/>

@@ -6,19 +6,9 @@ class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
             username: "",
             password: "",
             confirm_password: "",
-
-            first_name: "",
-            last_name: "",
-            dob: "",
-            phone_number: "",
-            specialization: "",
-            user_type: "PATIENT",
-
-            spec_list: [],
 
             errors: {},
         };
@@ -28,19 +18,6 @@ class Register extends Component {
         if (loggedIn()) {
             this.props.history.push("/");
         }
-        axios
-            .get("http://localhost:5000/specialization")
-            .then((response) => {
-                this.setState({
-                    specialization: response.data.specializations[0].spec,
-                    spec_list: response.data.specializations,
-                });
-            })
-            .catch((error) => {
-                if (error.response) {
-                    console.log(error);
-                }
-            });
     }
 
     handleChange = (e) => {
@@ -51,21 +28,13 @@ class Register extends Component {
 
     validate = () => {
         const {
-            email,
             username,
             password,
-            confirm_password,
-            first_name,
-            last_name,
-            dob,
-            phone_number,
+            confirm_password
         } = this.state;
         let isValid = true;
         let err = {};
-        if (email === "" || !email.includes("@")) {
-            isValid = false;
-            err.email = "Invalid email";
-        }
+
         if (username === "") {
             isValid = false;
             err.username = "Must not be empty";
@@ -77,22 +46,6 @@ class Register extends Component {
         if (password !== confirm_password) {
             isValid = false;
             err.confirm_password = "Passwords do not match";
-        }
-        if (first_name === "") {
-            isValid = false;
-            err.first_name = "Must not be empty";
-        }
-        if (last_name === "") {
-            isValid = false;
-            err.last_name = "Must not be empty";
-        }
-        if (dob === "") {
-            isValid = false;
-            err.dob = "Must not be empty";
-        }
-        if (phone_number === "" || !phone_number.match(/^\d{10}$/)) {
-            isValid = false;
-            err.phone_number = "Invalid phone number";
         }
 
         this.setState({
@@ -113,16 +66,13 @@ class Register extends Component {
 
         if (isValid) {
             let newUser = { ...this.state };
-            delete newUser.spec_list;
             axios
                 .post("http://localhost:5000/user/register", newUser)
                 .then((response) => {
                     const data = response.data;
                     const user = {
-                        id: data.id,
                         username: data.username,
-                        user_type: data.user_type,
-                        user_status: data.user_status,
+                        trips: []
                     };
                     localStorage.setItem("user", JSON.stringify(user));
                     window.location.href = "http://localhost:3000/";
@@ -142,123 +92,16 @@ class Register extends Component {
 
     render() {
         const {
-            email,
             username,
             password,
             confirm_password,
-            first_name,
-            last_name,
-            dob,
-            phone_number,
-            specialization,
-            user_type,
-            spec_list,
-            errors,
+            errors
         } = this.state;
-
-        let signupForm = null;
-        let d = new Date(),
-            month = "" + (d.getMonth() + 1),
-            day = "" + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = "0" + month;
-        if (day.length < 2) day = "0" + day;
-
-        const today = [year, month, day].join("-");
-
-        if (user_type === "PATIENT") {
-            signupForm = (
-                <div>
-                    <div>
-                        <input
-                            type="text"
-                            name="phone_number"
-                            placeholder="phone number"
-                            value={phone_number}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div style={{ color: "red" }}>{errors.phone_number}</div>
-                    <div>
-                        <label>Date of Birth: </label>
-                        <input
-                            type="date"
-                            name="dob"
-                            value={dob}
-                            onChange={this.handleChange}
-                            max={today}
-                        />
-                    </div>
-                    <div style={{ color: "red" }}>{errors.dob}</div>
-                </div>
-            );
-        } else if (user_type === "DOCTOR") {
-            signupForm = (
-                <div>
-                    <div>
-                        <input
-                            type="text"
-                            name="phone_number"
-                            placeholder="phone number"
-                            value={phone_number}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div style={{ color: "red" }}>{errors.phone_number}</div>
-                    <div>
-                        <label>Date of Birth: </label>
-                        <input
-                            type="date"
-                            name="dob"
-                            value={dob}
-                            onChange={this.handleChange}
-                            max={today}
-                        />
-                    </div>
-                    <div style={{ color: "red" }}>{errors.dob}</div>
-                    <div>
-                        <label>Specialization: </label>
-                        <select
-                            name="specialization"
-                            value={specialization}
-                            onChange={this.handleChange}
-                        >
-                            {spec_list.map((item) => (
-                                <option key={item.id} value={item.spec}>
-                                    {item.spec}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-            );
-        }
 
         return (
             <div style={{ textAlign: "center" }}>
                 <h2>Register</h2>
                 <form onSubmit={this.handleSubmit}>
-                    <label>Role </label>
-                    <select
-                        name="user_type"
-                        value={user_type}
-                        onChange={this.handleChange}
-                    >
-                        <option value="PATIENT">Patient</option>
-                        <option value="DOCTOR">Doctor</option>
-                        <option value="ADMIN">Admin</option>
-                    </select>
-                    <div>
-                        <input
-                            type="text"
-                            name="email"
-                            placeholder="email"
-                            value={email}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div style={{ color: "red" }}>{errors.email}</div>
                     <div>
                         <input
                             type="text"
@@ -269,26 +112,6 @@ class Register extends Component {
                         />
                     </div>
                     <div style={{ color: "red" }}>{errors.username}</div>
-                    <div>
-                        <input
-                            type="text"
-                            name="first_name"
-                            placeholder="first name"
-                            value={first_name}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div style={{ color: "red" }}>{errors.first_name}</div>
-                    <div>
-                        <input
-                            type="text"
-                            name="last_name"
-                            placeholder="last name"
-                            value={last_name}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div style={{ color: "red" }}>{errors.last_name}</div>
                     <div>
                         <input
                             type="password"
@@ -309,7 +132,6 @@ class Register extends Component {
                         />
                     </div>
                     <div style={{ color: "red" }}>{errors.confirm_password}</div>
-                    {signupForm}
                     <div style={{ color: "red" }}>{errors.response}</div>
                     <button type="submit">Register</button>
                     <p>

@@ -75,7 +75,7 @@ public class WorkerMain {
 
                 WorkerToCoordinatorMessage workerToCoordinatorMessage = null;
 
-                if ("MONEY".equals(filter)) {
+                if ("PRICE".equals(filter)) {
                     workerToCoordinatorMessage = dijkstra.runAlgo(moneyGraph, NUM_THREADS, startNode, endNode);
                 } else if ("TIME".equals(filter)) {
                     workerToCoordinatorMessage = dijkstra.runAlgo(timeGraph, NUM_THREADS, startNode, endNode);
