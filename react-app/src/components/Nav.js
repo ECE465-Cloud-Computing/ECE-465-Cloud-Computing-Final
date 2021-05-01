@@ -11,16 +11,24 @@ const Nav = (props) => {
     if (user != null) {
         return (
             <div style={{textAlign: 'right', padding: '10px'}}>
-                <Link to="/">Home</Link>
-                <Link to="/trips">My trips</Link>
+                <Link to="/">
+                    <button style={{marginLeft: '20px'}}>Home</button>
+                </Link>
+                <Link to="/trips" >
+                    <button style={{marginLeft: '20px'}}>My Trips</button>
+                </Link>
                 <button onClick={handleLogout} style={{marginLeft: '20px'}}>Logout</button>
             </div>
         );
     } else {
         return (
             <div style={{textAlign: 'right', padding: '10px'}}>
-                <Link to="/">Home</Link>
-                <Link to="/login" style={{marginLeft: '20px'}}>Login</Link>
+                <Link to="/">
+                    <button>Home</button>
+                </Link>
+                <Link to="/login">
+                    <button style={{marginLeft: '20px'}}>Login</button>
+                </Link>
             </div>
         );
     }

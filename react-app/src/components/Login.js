@@ -52,23 +52,21 @@ class Login extends Component {
         if (isValid) {
             // console.log(this.state);
             axios
-                .post("http://localhost:5000/user/login", {
-                    body: {
-                        username: this.state.username,
+                .get("/user", {
+                    params: {
+                        Username: this.state.username,
                         password: this.state.password,
                     }
                 })
                 .then((response) => {
-                    const user = JSON.stringify(response.data);
-                    localStorage.setItem("user", user);
+                    console.log(response.data);
+                    localStorage.setItem("user", JSON.stringify(response.data.body));
                     window.location.href = "http://localhost:3000/";
                 })
                 .catch((error) => {
-                    if (error.response) {
-                        this.setState({
-                            responseError: error.response.data.error,
-                        });
-                    }
+                    this.setState({
+                        responseError: "Incorrect password",
+                    });
                 });
         }
     };

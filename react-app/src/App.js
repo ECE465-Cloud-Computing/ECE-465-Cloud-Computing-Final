@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Login from './components/Login.js'
 import Register from "./components/Register";
 import Nav from "./components/Nav";
+import MyTrips from "./components/MyTrips";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/" exact component={Home}/>
                 <Route path="/register" exact component={Register}/>
                 <Route path="/login" exact component={Login}/>
+                <Route path="/mytrips" exact component={MyTrips}/>
             </Switch>
         </Router>
     );

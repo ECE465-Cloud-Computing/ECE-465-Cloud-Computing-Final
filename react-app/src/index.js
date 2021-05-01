@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import axios from "axios";
+
+axios.defaults.baseURL = 'https://ce4c9ztp47.execute-api.us-east-1.amazonaws.com/beta';
 
 ReactDOM.render(
   <React.StrictMode>
