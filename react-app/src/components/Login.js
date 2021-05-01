@@ -6,10 +6,9 @@ class Login extends Component {
         super(props);
 
         this.state = {
-            email: "",
+            username: "",
             password: "",
-            user_type: "PATIENT",
-            emailError: "",
+            usernameError: "",
             passwordError: "",
             responseError: "",
         };
@@ -22,21 +21,19 @@ class Login extends Component {
     };
 
     validate = () => {
-        const { email, password } = this.state;
-        let emailError = "";
+        const { username, password } = this.state;
+        let usernameError = "";
         let passwordError = "";
-        // if (email === "" || !email.includes("@")) {
-        // 	emailError = "Invalid email";
-        // }
-        if (email === "") {
-            emailError = "Must not be empty";
+
+        if (username === "") {
+            usernameError = "Must not be empty";
         }
         if (password === "") {
             passwordError = "Must not be empty";
         }
-        if (emailError || passwordError) {
+        if (usernameError || passwordError) {
             this.setState({
-                emailError: emailError,
+                usernameError: usernameError,
                 passwordError: passwordError,
             });
             return false;
@@ -47,7 +44,7 @@ class Login extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.setState({
-            emailError: "",
+            usernameError: "",
             passwordError: "",
             responseError: "",
         });
@@ -55,12 +52,11 @@ class Login extends Component {
         if (isValid) {
             // console.log(this.state);
             axios
-                .post("http://localhost:5000/user/login", null, {
-                    params: {
-                        email: this.state.email,
+                .post("http://localhost:5000/user/login", {
+                    body: {
+                        username: this.state.username,
                         password: this.state.password,
-                        user_type: this.state.user_type,
-                    },
+                    }
                 })
                 .then((response) => {
                     const user = JSON.stringify(response.data);
@@ -79,55 +75,46 @@ class Login extends Component {
 
     render() {
         const {
-            email,
+            username,
             password,
-            user_type,
-            emailError,
+            usernameError,
             passwordError,
             responseError,
         } = this.state;
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div>
-                    <h1>Login</h1>
-                    <label>Role </label>
-                    <select
-                        name="user_type"
-                        value={user_type}
-                        onChange={this.handleChange}
-                    >
-                        <option value="PATIENT">Patient</option>
-                        <option value="DOCTOR">Doctor</option>
-                        <option value="ADMIN">Admin</option>
-                    </select>
-                </div>
-                <div>
-                    <input
-                        type="text"
-                        name="email"
-                        placeholder="email"
-                        value={email}
-                        onChange={this.handleChange}
-                    />
-                </div>
-                <div style={{ color: "red" }}>{emailError}</div>
-                <div>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="password"
-                        value={password}
-                        onChange={this.handleChange}
-                    />
-                </div>
-                <div style={{ color: "red" }}>{passwordError}</div>
-                <div style={{ color: "red" }}>{responseError}</div>
-                <button type="submit">Login</button>
-                <p>
-                    Don't have an account? Sign up{" "}
-                    <a href="http://localhost:3000/register">here</a>
-                </p>
-            </form>
+            <div style={{ textAlign: "center" }}>
+                <form onSubmit={this.handleSubmit}>
+                    <div>
+                        <h1>Login</h1>
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="username"
+                            value={username}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                    <div style={{ color: "red" }}>{usernameError}</div>
+                    <div>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="password"
+                            value={password}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                    <div style={{ color: "red" }}>{passwordError}</div>
+                    <div style={{ color: "red" }}>{responseError}</div>
+                    <button type="submit">Login</button>
+                    <p>
+                        Don't have an account? Sign up{" "}
+                        <a href="http://localhost:3000/register">here</a>
+                    </p>
+                </form>
+            </div>
         );
     }
 }
