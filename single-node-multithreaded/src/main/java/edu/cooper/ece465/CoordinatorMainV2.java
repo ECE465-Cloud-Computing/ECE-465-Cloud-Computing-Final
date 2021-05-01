@@ -9,25 +9,28 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class CoordinatorMainV2 {
     private static Coordinator coordinator;
 
     public static void main(String[] args) {
-        String workerIP = args[0];
-        int[] portNumber = new int[args.length-1];
+
+        int portNumber = Integer.parseInt(args[0]);
+        String[] workerIP = new String[args.length-1];
         for(int i=1; i < args.length; i++) {
-            portNumber[i-1] = Integer.parseInt(args[i]);
+            workerIP[i-1] = args[i];
         }
 
-        System.out.println(Arrays.toString(portNumber));
+//        String workerIP = args[0];
+//        int[] portNumber = new int[args.length-1];
+//        for(int i=1; i < args.length; i++) {
+//            portNumber[i-1] = Integer.parseInt(args[i]);
+//        }
+
         coordinator = new Coordinator(workerIP, portNumber);
 
-        try (ServerSocket serverSocket = new ServerSocket(8080)) {
+        try (ServerSocket serverSocket = new ServerSocket(5000)) {
             while (true) {
                 try (Socket client = serverSocket.accept()) {
                     handleClient(client);
@@ -53,7 +56,14 @@ public class CoordinatorMainV2 {
 
         Gson gson = new Gson();
         PriorityQueue<WorkerToCoordinatorMessage> result = coordinator.runAlgo(params.get("filter").toUpperCase(), Integer.parseInt(params.get("start")), Integer.parseInt(params.get("end")));
-        String responseString = gson.toJson(result);
+
+        List<WorkerToCoordinatorMessage> tempList = new ArrayList<>();
+        while (!result.isEmpty()){
+            WorkerToCoordinatorMessage temp = result.poll();
+            tempList.add(temp);
+        }
+
+        String responseString = gson.toJson(tempList);
         System.out.println(responseString);
 
         sendResponse(client, "200 OK", String.format("application/json; charset=%s", StandardCharsets.UTF_8), responseString);

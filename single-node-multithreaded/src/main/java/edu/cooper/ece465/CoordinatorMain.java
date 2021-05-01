@@ -38,13 +38,14 @@ public class CoordinatorMain {
         }
 
         System.out.println(Arrays.toString(portNumber));
-        coordinator = new Coordinator(workerIP, portNumber);
+//        coordinator = new Coordinator(workerIP, portNumber);
 //        coordinator.test();
 
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 5000), 0);
         server.createContext("/test", new MyHttpHandler());
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         server.setExecutor(threadPoolExecutor);
+        System.out.println("STARTING SERVER");
         server.start();
     }
 
@@ -65,6 +66,12 @@ public class CoordinatorMain {
             Gson gson = new Gson();
             PriorityQueue<WorkerToCoordinatorMessage> result = coordinator.runAlgo(params.get("filter").toUpperCase(), Integer.parseInt(params.get("start")), Integer.parseInt(params.get("end")));
             String responseString = gson.toJson(result);
+
+            List<WorkerToCoordinatorMessage> tempList = new ArrayList<>();
+            while (!result.isEmpty()){
+                WorkerToCoordinatorMessage temp = result.poll();
+                tempList.add(temp);
+            }
 
             headers.set("Content-Type", String.format("application/json; charset=%s", StandardCharsets.UTF_8));
             final byte[] rawResponseBody = responseString.getBytes(StandardCharsets.UTF_8);
