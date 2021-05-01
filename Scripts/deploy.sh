@@ -23,4 +23,11 @@ do
 done
 echo "Done." | tee -a ${LOGFILE}
 
+INSTANCES_IDS_ARRAY=$(echo $INSTANCES_IDS | tr " " "\n")
+for instance in $INSTANCES_IDS_ARRAY
+do
+  instance_id=${instance}
+done
+aws ec2 associate-address --instance-id ${instance_id} --allocation-id ${ELASTIC_ID} --allow-reassociation
+
 exit 0

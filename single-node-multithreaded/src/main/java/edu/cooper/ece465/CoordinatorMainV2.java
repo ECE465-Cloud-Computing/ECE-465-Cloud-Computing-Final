@@ -73,7 +73,7 @@ public class CoordinatorMainV2 {
         final String CRLF = "\n\r";
         OutputStream clientOutput = client.getOutputStream();
         String res =
-                "HTTP/1.1 " + status + CRLF + "Content-Type: " + contentType + CRLF + CRLF + content + CRLF + CRLF;
+                "HTTP/1.1 " + status + CRLF + "Access-Control-Allow-Origin: *" + CRLF + "Content-Type: " + contentType + CRLF + CRLF + content + CRLF + CRLF;
         clientOutput.write(res.getBytes(StandardCharsets.UTF_8));
         clientOutput.flush();
         client.close();
