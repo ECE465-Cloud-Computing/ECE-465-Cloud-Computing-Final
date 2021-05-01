@@ -37,34 +37,30 @@ exports.handler = (event, context, callback) => {
     console.log(event.body)
     const requestBody = JSON.parse(event.body);
 
-    const Username = requestBody.Username;
+    const username = requestBody.Username;
     const password = requestBody.password;
 
     let param = {
         TableName:"UserTrips",
-        Item:{
-            "Username": Username,
-            "password": password,
-            "trips": []
+        KeyConditionExpression: '#usr = :u',
+        ExpressionAttributeNames:{
+            "#usr": "Username"
         },
-        ConditionExpression: "attribute_not_exists(Username)",
         ExpressionAttributeValues: {
-            ':u': {S: username},
-            ':p' : {S: password}
+            ':u': username,
         },
-        FilterExpression: 'contains (:u, :p)',
-        TableName: 'EPISODES_TABLE'
     }
 
     ddb.query(param, function(err, data) {
         if (err) {
             errorResponse(err.message, context.awsRequestId, callback);
+        } else if (data.Items[0].password != password) {
+            callback(new Error("Invalid password."));
         } else {
             callback(null, {
-                statusCode: 201,
-                body: JSON.stringify(data.Item),
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
+                body: {
+                    'username': (data.Items[0].Username),
+                    'trips': (data.Items[0].trips)
                 },
             });
         }
