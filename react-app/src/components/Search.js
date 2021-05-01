@@ -51,17 +51,17 @@ class Search extends Component {
         });
         const isValid = this.validate();
         if (isValid) {
-            // console.log(this.state);
+            console.log(this.state);
             axios
-                .post("http://localhost:5000/user/login", null, {
+                .post("http://3.83.211.184:5000/", null, {
                     params: {
-                        start: this.state.email,
-                        end: this.state.password,
+                        start: 0,
+                        end: 3,
                         filter: this.state.filter,
                     },
                 })
                 .then((response) => {
-
+                    console.log(response.data);
                 })
                 .catch((error) => {
                     if (error.response) {
@@ -100,7 +100,7 @@ class Search extends Component {
                     <input
                         type="text"
                         name="start"
-                        placeholder="start"
+                        placeholder="From"
                         value={start}
                         onChange={this.handleChange}
                     />
@@ -110,7 +110,7 @@ class Search extends Component {
                     <input
                         type="text"
                         name="end"
-                        placeholder="end"
+                        placeholder="To"
                         value={end}
                         onChange={this.handleChange}
                     />
