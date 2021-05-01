@@ -65,13 +65,19 @@ class Register extends Component {
         const isValid = this.validate();
 
         if (isValid) {
-            let newUser = { ...this.state };
+
             axios
-                .post("http://localhost:5000/user/register", newUser)
+                .post("/user", {
+                    body: JSON.stringify({
+                        Username: this.state.username,
+                        password: this.state.password
+                    })
+                })
                 .then((response) => {
+                    console.log(response.data);
                     const data = response.data;
                     const user = {
-                        username: data.username,
+                        username: data.body.Username,
                         trips: []
                     };
                     localStorage.setItem("user", JSON.stringify(user));
@@ -79,7 +85,7 @@ class Register extends Component {
                 })
                 .catch((error) => {
                     if (error.response) {
-                        console.log(error);
+                        // console.log(error);
                         this.setState({
                             errors: {
                                 response: error.response.data.error,
