@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import loggedIn from "./loggedIn";
+import {Link} from "react-router-dom";
 
 class Login extends Component {
     constructor(props) {
@@ -68,7 +69,7 @@ class Login extends Component {
                 .then((response) => {
                     console.log(response.data);
                     localStorage.setItem("user", JSON.stringify(response.data.body));
-                    window.location.href = "http://localhost:3000/";
+                    window.location = "/";
                 })
                 .catch((error) => {
                     this.setState({
@@ -116,7 +117,7 @@ class Login extends Component {
                     <button type="submit">Login</button>
                     <p>
                         Don't have an account? Sign up{" "}
-                        <a href="http://localhost:3000/register">here</a>
+                        <Link to="/register">Here</Link>
                     </p>
                 </form>
             </div>
