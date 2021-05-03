@@ -57,7 +57,7 @@ exports.handler = (event, context, callback) => {
         } else {
             callback(null, {
                 statusCode: 201,
-                body: JSON.stringify({
+                body: ({
                     Username: Username,
                     password: password
                 }),
