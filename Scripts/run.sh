@@ -41,8 +41,8 @@ for ((i = 0 ; i < NUM_IPS-1 ; i++)); do
 #	ssh -n -f user@host "sh -c 'nohup java -cp ${PROG} edu.cooper.ece465.Main 6666 > /dev/null 2>&1 &'"
 done
 sleep 1
-ssh -i ${KEY_FILE} ${USER}@${INSTANCES_IPS_ARRAY[${NUM_IPS}-1]} "killall -9 java"
-ssh -i ${KEY_FILE} ${USER}@${INSTANCES_IPS_ARRAY[${NUM_IPS}-1]} "java -cp ${PROG} edu.cooper.ece465.CoordinatorMainV2 6666 ${PRIVATE_IPS_ARRAY[0]} ${PRIVATE_IPS_ARRAY[1]} ${PRIVATE_IPS_ARRAY[2]} ${PRIVATE_IPS_ARRAY[3]}" | tee -a ${LOGFILE}
+ssh -i ${KEY_FILE} ${USER}@${ELASTIC_IP} "killall -9 java"
+ssh -i ${KEY_FILE} ${USER}@${ELASTIC_IP} "java -cp ${PROG} edu.cooper.ece465.CoordinatorMainV2 6666 ${PRIVATE_IPS_ARRAY[0]} ${PRIVATE_IPS_ARRAY[1]} ${PRIVATE_IPS_ARRAY[2]} ${PRIVATE_IPS_ARRAY[3]}" | tee -a ${LOGFILE}
 
 echo "Done." | tee -a ${LOGFILE}
 
