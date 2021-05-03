@@ -65,7 +65,6 @@ class Register extends Component {
         const isValid = this.validate();
 
         if (isValid) {
-
             axios
                 .post("/user", {
                     body: JSON.stringify({
@@ -77,18 +76,17 @@ class Register extends Component {
                     console.log(response.data);
                     const data = response.data;
                     const user = {
-                        username: data.body.Username,
-                        trips: []
+                        username: data.body.Username
                     };
                     localStorage.setItem("user", JSON.stringify(user));
                     window.location.href = "http://localhost:3000/";
                 })
                 .catch((error) => {
                     if (error.response) {
-                        // console.log(error);
+                        console.log(error);
                         this.setState({
                             errors: {
-                                response: error.response.data.error,
+                                response: "Username already exists",
                             },
                         });
                     }

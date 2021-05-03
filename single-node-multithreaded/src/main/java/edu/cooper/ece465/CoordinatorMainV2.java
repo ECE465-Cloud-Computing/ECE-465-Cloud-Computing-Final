@@ -107,7 +107,7 @@ public class CoordinatorMainV2 {
             String[] entry = param.split("=");
             if (entry.length > 1) {
                 result.put(entry[0], entry[1]);
-            }else{
+            } else {
                 result.put(entry[0], "");
             }
         }

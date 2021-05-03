@@ -14,7 +14,7 @@ const Nav = (props) => {
                 <Link to="/">
                     <button style={{marginLeft: '20px'}}>Home</button>
                 </Link>
-                <Link to="/trips" >
+                <Link to="/mytrips" >
                     <button style={{marginLeft: '20px'}}>My Trips</button>
                 </Link>
                 <button onClick={handleLogout} style={{marginLeft: '20px'}}>Logout</button>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import loggedIn from "./loggedIn";
 
 class Login extends Component {
     constructor(props) {
@@ -12,6 +13,12 @@ class Login extends Component {
             passwordError: "",
             responseError: "",
         };
+    }
+
+    componentDidMount() {
+        if (loggedIn()) {
+            this.props.history.push("/");
+        }
     }
 
     handleChange = (e) => {
@@ -65,7 +72,7 @@ class Login extends Component {
                 })
                 .catch((error) => {
                     this.setState({
-                        responseError: "Incorrect password",
+                        responseError: "Incorrect credentials",
                     });
                 });
         }
