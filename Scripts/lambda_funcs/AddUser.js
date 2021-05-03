@@ -45,15 +45,15 @@ exports.handler = (event, context, callback) => {
         TableName:"UserTrips",
         Item:{
             "Username": Username,
-            "password": password,
-            "trips": []
+            "password": password
         },
         ConditionExpression: "attribute_not_exists(Username)"
     }
 
     ddb.put(param, function(err, data) {
         if (err) {
-            errorResponse(err.message, context.awsRequestId, callback);
+            // errorResponse(err.message, context.awsRequestId, callback);
+            callback(new Error("Error 500: Username already exists."));
         } else {
             callback(null, {
                 statusCode: 201,

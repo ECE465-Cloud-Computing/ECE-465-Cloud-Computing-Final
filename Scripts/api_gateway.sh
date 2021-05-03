@@ -4,7 +4,7 @@ source ./load_lab_config.sh
 
 CHILDNAME=GETROUTE
 
-API_ID=$(aws apigateway create-rest-api --name 'ece465final' --region us-west-2) | jq '.id'
+API_ID=$(aws apigateway create-rest-api --name 'ece465final' --region us-west-2 | jq '.id')
 echo ${API_ID}
 
 ROOT_ID=$(aws apigateway get-resources --rest-api-id ${API_ID} --region us-west-2) | jq '.items.id'

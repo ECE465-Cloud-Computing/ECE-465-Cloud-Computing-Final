@@ -75,7 +75,7 @@ public class Dijkstra {
             path.add(start);
             start = prevNode.get(start);
         }
-        path.add(startNode);
+//        path.add(startNode);
         System.out.println(path);
         return new WorkerToCoordinatorMessage("", path, nodeDistances.get(endNode));
     }

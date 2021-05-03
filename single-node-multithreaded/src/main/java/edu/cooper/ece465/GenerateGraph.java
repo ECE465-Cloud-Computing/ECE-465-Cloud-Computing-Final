@@ -29,13 +29,9 @@ public class GenerateGraph {
                         moneybufferedWriter.append("0");
                         timebufferedWriter.append("0");
                     } else if (edge >= 40) {
-                        int edgeDist = (int) (random.nextGaussian()*50+200);
-                        if (edgeDist < 0)
-                            edgeDist = -edgeDist;
+                        int edgeDist = random.nextInt(885 - 0 + 1) + 0;
                         moneybufferedWriter.append(String.valueOf(edgeDist));
-                        edgeDist = (int) (random.nextGaussian()*10+20);
-                        if (edgeDist < 0)
-                            edgeDist = -edgeDist;
+                        edgeDist = random.nextInt(885 - 0 + 1) + 0;
                         timebufferedWriter.append(String.valueOf(edgeDist));
                     } else {
                         moneybufferedWriter.append("0");
