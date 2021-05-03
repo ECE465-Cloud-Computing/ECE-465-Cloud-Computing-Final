@@ -9,6 +9,7 @@ class Search extends Component {
             start: "",
             end: "",
             filter: "PRICE",
+            filterDisplay: "Price",
             results: [],
             startError: "",
             endError: "",
@@ -67,9 +68,18 @@ class Search extends Component {
                             responseError: "No trips found",
                         });
                     } else {
-                        this.setState({
-                            results: response.data
-                        })
+                        if (this.state.filter === "PRICE") {
+                            this.setState({
+                                results: response.data,
+                                filterDisplay: "Price"
+                            })
+                        } else {
+                            this.setState({
+                                results: response.data,
+                                filterDisplay: "Time"
+                            })
+                        }
+
                     }
                 })
                 .catch((error) => {
@@ -87,6 +97,7 @@ class Search extends Component {
             start,
             end,
             filter,
+            filterDisplay,
             results,
             startError,
             endError,
@@ -94,11 +105,6 @@ class Search extends Component {
         } = this.state;
 
         let resultsRender = null;
-        let filterDisplay = null;
-        if (filter === "PRICE")
-            filterDisplay = 'Price';
-        else
-            filterDisplay = 'Time';
 
         if (results.length !== 0) {
             resultsRender = results.map(result => {
