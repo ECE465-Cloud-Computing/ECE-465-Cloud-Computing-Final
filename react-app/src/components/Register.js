@@ -74,7 +74,7 @@ class Register extends Component {
                     })
                 })
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     const data = response.data;
                     const user = {
                         username: data.body.Username

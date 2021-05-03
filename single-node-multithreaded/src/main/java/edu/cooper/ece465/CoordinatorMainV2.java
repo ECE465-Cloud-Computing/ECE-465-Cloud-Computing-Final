@@ -26,11 +26,6 @@ public class CoordinatorMainV2 {
             workerIP[i-1] = args[i];
         }
 
-//        String workerIP = args[0];
-//        int[] portNumber = new int[args.length-1];
-//        for(int i=1; i < args.length; i++) {
-//            portNumber[i-1] = Integer.parseInt(args[i]);
-//        }
 
         coordinator = new Coordinator(workerIP, portNumber);
 
@@ -57,7 +52,6 @@ public class CoordinatorMainV2 {
         String line = br.readLine();
         System.out.println(line);
         String[] requestLine = line.split(" ");
-        String method = requestLine[0];
         String path = requestLine[1];
 
         String query = path.split("\\?")[1];
