@@ -55,8 +55,8 @@ class Search extends Component {
             console.log(this.state);
             axios.get("", {
                     params: {
-                        start: 0,
-                        end: 3,
+                        start: this.state.start,
+                        end: this.state.end,
                         filter: this.state.filter,
                     },
                 })
@@ -75,8 +75,6 @@ class Search extends Component {
                 });
         }
     };
-
-
 
     render() {
         const {
