@@ -87,7 +87,6 @@ public class CoordinatorMainV2 {
 
         String responseString = gson.toJson(tempList);
         System.out.println(responseString);
-
         sendResponse(client, "200 OK", String.format("application/json; charset=%s", StandardCharsets.UTF_8), responseString);
     }
 
@@ -106,7 +105,7 @@ public class CoordinatorMainV2 {
         for (String param : query.split("&")) {
             String[] entry = param.split("=");
             if (entry.length > 1) {
-                result.put(entry[0], entry[1]);
+                result.put(entry[0], entry[1].replace('+', ' '));
             }else{
                 result.put(entry[0], "");
             }
