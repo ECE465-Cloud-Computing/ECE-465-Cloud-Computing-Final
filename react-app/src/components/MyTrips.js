@@ -19,7 +19,7 @@ class MyTrips extends Component {
                 }
             })
             .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     if(response.data) {
                         this.setState({
                             trips: response.data.body
@@ -58,16 +58,13 @@ class MyTrips extends Component {
                     <button onClick={() => {
                         const user = JSON.parse(localStorage.getItem("user"));
                         if (user != null) {
-                            console.log({
-                                Username: user.username
-                            });
                             axios.delete("/trips", {
                                 params: {
                                     Username: user.username
                                 }
                             })
                             .then((response) => {
-                                    console.log(response.data);
+                                    // console.log(response.data);
                                     window.location.reload();
                                 }
                             );

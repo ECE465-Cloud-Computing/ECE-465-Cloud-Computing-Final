@@ -52,7 +52,7 @@ class Search extends Component {
         });
         const isValid = this.validate();
         if (isValid) {
-            console.log(this.state);
+            // console.log(this.state);
             axios.get("", {
                     params: {
                         start: this.state.start,
@@ -61,7 +61,7 @@ class Search extends Component {
                     },
                 })
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     this.setState({
                         results: response.data
                     })
@@ -111,10 +111,10 @@ class Search extends Component {
                         <button onClick={() => {
                             const user = JSON.parse(localStorage.getItem("user"));
                             if (user != null) {
-                                console.log({
-                                    Username: user.username,
-                                    trip: tripRender
-                                });
+                                // console.log({
+                                //     Username: user.username,
+                                //     trip: tripRender
+                                // });
                                 axios.post("/trips", {
                                         body: JSON.stringify({
                                             Username: user.username,
@@ -122,7 +122,7 @@ class Search extends Component {
                                         })
                                     })
                                 .then((response) => {
-                                        console.log(response.data);
+                                        // console.log(response.data);
                                         window.alert("Trip saved")
                                     }
                                 );

@@ -59,7 +59,7 @@ class Login extends Component {
                     }
                 })
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     localStorage.setItem("user", JSON.stringify(response.data.body));
                     window.location.href = "http://localhost:3000/";
                 })
