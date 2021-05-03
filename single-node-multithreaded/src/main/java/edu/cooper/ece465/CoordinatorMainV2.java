@@ -100,7 +100,7 @@ public class CoordinatorMainV2 {
             String[] entry = param.split("=");
             if (entry.length > 1) {
                 result.put(entry[0], entry[1].replace('+', ' '));
-            }else{
+            } else{
                 result.put(entry[0], "");
             }
         }

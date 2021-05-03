@@ -10,9 +10,10 @@ class MyTrips extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user != null) {
+            console.log(user.username);
             axios.get("/trips", {
                 params: {
                     Username: user.username
@@ -20,7 +21,7 @@ class MyTrips extends Component {
             })
             .then((response) => {
                     // console.log(response.data);
-                    if(response.data) {
+                    if(response.data.body) {
                         this.setState({
                             trips: response.data.body
                         })
@@ -37,7 +38,7 @@ class MyTrips extends Component {
         let tripsRender = null;
 
         if (trips.length !== 0) {
-            tripsRender = trips.map(trip => {
+            tripsRender = trips.slice().reverse().map(trip => {
                 let splitTrip = trip.split(',');
                 const airline = splitTrip[0];
                 const tripString = splitTrip[1];

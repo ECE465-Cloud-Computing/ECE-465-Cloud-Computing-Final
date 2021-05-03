@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import loggedIn from "./loggedIn";
+import {Link} from "react-router-dom";
 
 class Register extends Component {
     constructor(props) {
@@ -65,7 +66,6 @@ class Register extends Component {
         const isValid = this.validate();
 
         if (isValid) {
-
             axios
                 .post("/user", {
                     body: JSON.stringify({
@@ -77,18 +77,17 @@ class Register extends Component {
                     // console.log(response.data);
                     const data = response.data;
                     const user = {
-                        username: data.body.Username,
-                        trips: []
+                        username: data.body.Username
                     };
                     localStorage.setItem("user", JSON.stringify(user));
-                    window.location.href = "http://localhost:3000/";
+                    window.location = "/";
                 })
                 .catch((error) => {
                     if (error.response) {
-                        // console.log(error);
+                        console.log(error);
                         this.setState({
                             errors: {
-                                response: error.response.data.error,
+                                response: "Username already exists",
                             },
                         });
                     }
@@ -142,7 +141,7 @@ class Register extends Component {
                     <button type="submit">Register</button>
                     <p>
                         Already have an account? Login{" "}
-                        <a href="http://localhost:3000/">here</a>
+                        <Link to="/login">Here</Link>
                     </p>
                 </form>
             </div>
