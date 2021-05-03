@@ -50,11 +50,7 @@ exports.handler = (event, context, callback) => {
             errorResponse(err.message, context.awsRequestId, callback);
         } else {
             callback(null, {
-                statusCode: 201,
-                body: JSON.stringify(data.Item.trips),
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                },
+                body: (data.Item.trips),
             });
         }
     });

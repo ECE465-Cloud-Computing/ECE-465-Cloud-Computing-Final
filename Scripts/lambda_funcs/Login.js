@@ -14,19 +14,6 @@ function toUrlString(buffer) {
         .replace(/=/g, '');
 }
 
-function errorResponse(errorMessage, awsRequestId, callback) {
-    callback(null, {
-        statusCode: 500,
-        body: JSON.stringify({
-            Error: errorMessage,
-            Reference: awsRequestId,
-        }),
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        },
-    });
-}
-
 
 exports.handler = (event, context, callback) => {
 
@@ -53,9 +40,11 @@ exports.handler = (event, context, callback) => {
 
     ddb.query(param, function(err, data) {
         if (err) {
-            errorResponse(err.message, context.awsRequestId, callback);
+            callback(new Error("Error 400: Username not found."));
+        } else if (data.Items[0] == undefined) {
+            callback(new Error("Error 400: Username not found."));
         } else if (data.Items[0].password != password) {
-            callback(new Error("Invalid password."));
+            callback(new Error("Error 400: Invalid password."));
         } else {
             callback(null, {
                 body: {
