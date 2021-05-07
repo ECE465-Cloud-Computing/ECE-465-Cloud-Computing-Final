@@ -11,9 +11,9 @@ public class GenerateGraph {
         }
         Random random = new Random();
         String[] filters = {"money", "time"};
-        FileWriter moneyfileWriter = new FileWriter("./" + args[1] + "_money.txt");
+        FileWriter moneyfileWriter = new FileWriter("./inputs/" + args[1] + "_money.txt");
         BufferedWriter moneybufferedWriter = new BufferedWriter(moneyfileWriter);
-        FileWriter timefileWriter = new FileWriter("./" + args[1] + "_time.txt");
+        FileWriter timefileWriter = new FileWriter("./inputs/" + args[1] + "_time.txt");
         BufferedWriter timebufferedWriter = new BufferedWriter(timefileWriter);
         try {
             // First lines for #nodes + value of source node (default to zero)
