@@ -27,4 +27,17 @@ User-based APIs handle requests that modify the user database on the backend. Th
 The frontend is a simple web-application written in ReactJS. It has the following pages: register, login, search, and trips. The register and login pages allows the user to register for an account or login to their account, respectively. The search page allows the user to search for flights by inputing a starting and ending location as well as a filter (price or time). The search results are displayed on screen showing the best set of flights for each airline sorted by cost or time in ascending order. For each trip in the search results, users can click the save trip button to save it to their account. Users must be logged in to save trips. Finally, the trips pages displays the saved trips for the logged in user and can be cleared by clicking on the clear trips button. This page can only be accessed is the user is logged in.
 
 # Cloud architecture
-The application utilizes EC2 with VPC for the search algorithm computing, Lambda and DynamoDB for user-based APIs and database, Api Gateway for routing client requests, and Amplify for frontend deployment. These services are descibed in more detail below.
+The application utilizes EC2 with VPC for the search algorithm computing, Lambda and DynamoDB for user-based APIs and database, API Gateway for routing client requests, and Amplify for frontend deployment. All deployments are done using AWS CLI through bash scripts with the exception of API Gateway because permission for it is denied in CLI. These services are descibed in more detail below.
+
+## EC2
+EC2 instances are used for the Search API since speed is a necessity here and EC2 gives greater control over multi-threading and network communication than Lambda. One EC2 instance is used as coordinator and the rest are used as worker node computing servers. All EC2 instances are wrapped in a custom VPC for security reasons. Elatic IP is used to ensure that the IP address for the EC2 instance is consistant through different deployments.
+
+## Lambda and DynamoDB
+Lambda and DynamoDB are responsible for user-based APIs. A lambda function is setup for each of the following requests: create account, login, save trip, and clear trips. Each lambda function receives requests and extract the request parameters. It uses these parameters to execute queries to the DynamoDB database. All lambda functions are written in Node.js. DynamoDB is setup with a single table with the following schema: ```[username: String, password: String, trips: List[String]]```. 
+
+## API Gateway
+API Gateway is used for proper routing of client requests. Two resources, User and Trips, are setup in REST API format. Search requests are routed to EC2 while user-based requests are routed to lambda where create account is POST on User, login is GET on User, save trip is POST on Trips, and clear trips is DELETE on Trips. Response code mappings are done to properly handle error responses.
+
+## Amplify
+Amplify is used to deploy the frontend which is written in ReactJS. It deploys the React app from a github repository and handles requests by sending them to the API Gateway. 
+
