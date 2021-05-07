@@ -11,9 +11,9 @@ public class GenerateGraph {
         }
         Random random = new Random();
         String[] filters = {"money", "time"};
-        FileWriter moneyfileWriter = new FileWriter("./" + args[1] + "_money.txt");
+        FileWriter moneyfileWriter = new FileWriter("./inputs/" + args[1] + "_money.txt");
         BufferedWriter moneybufferedWriter = new BufferedWriter(moneyfileWriter);
-        FileWriter timefileWriter = new FileWriter("./" + args[1] + "_time.txt");
+        FileWriter timefileWriter = new FileWriter("./inputs/" + args[1] + "_time.txt");
         BufferedWriter timebufferedWriter = new BufferedWriter(timefileWriter);
         try {
             // First lines for #nodes + value of source node (default to zero)
@@ -46,9 +46,9 @@ public class GenerateGraph {
                 timebufferedWriter.newLine();
             }
         } catch (NumberFormatException e) {
-          System.out.println("Proper Usage is: java GenerateGraph [Number of Source Nodes].\nA number was not found in " +
-                  "the input for source nodes.");
-          System.exit(2);
+            System.out.println("Proper Usage is: java GenerateGraph [Number of Source Nodes].\nA number was not found in " +
+                    "the input for source nodes.");
+            System.exit(2);
         }
         moneybufferedWriter.close();
         timebufferedWriter.close();
