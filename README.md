@@ -29,7 +29,7 @@ The frontend is a simple web-application written in ReactJS. It has the followin
 # Cloud architecture
 The application utilizes EC2 with VPC for the search algorithm computing, Lambda and DynamoDB for user-based APIs and database, API Gateway for routing client requests, and Amplify for frontend deployment. All deployments are done using AWS CLI through bash scripts with the exception of API Gateway because permission for it is denied in CLI. These services are descibed in more detail below.
 
-![alt text](https://github.com/ECE465-Cloud-Computing/ECE-465-Cloud-Computing-Final/blob/main/Cloud%20Computing%20Final%20Project%20Diagram_3.jpg?raw=true)
+![alt text](https://github.com/ECE465-Cloud-Computing/ECE-465-Cloud-Computing-Final/blob/main/Cloud%20Computing%20Final%20Project%20Diagram%3.jpg?raw=true)
 
 ## EC2
 EC2 instances are used for the Search API since speed is a necessity here and EC2 gives greater control over multi-threading and network communication than Lambda. One EC2 instance is used as coordinator and the rest are used as worker node computing servers. All EC2 instances are wrapped in a custom VPC for security reasons. Elatic IP is used to ensure that the IP address for the EC2 instance is consistant through different deployments.
