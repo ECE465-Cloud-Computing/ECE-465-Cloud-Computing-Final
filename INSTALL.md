@@ -3,7 +3,8 @@
 ## Requirements
 - AWS CLI
 
-### NOTE: All commands should be ran in the scripts directory.
+### NOTE: All commands should be ran in the Scripts directory.
+- ```cd Scripts/```
 ### 1) Setup SSH key
 - Run ```create_keypair.sh```
 ### 2) Setup VPC
