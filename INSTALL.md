@@ -3,6 +3,7 @@
 ## Requirements
 - AWS CLI
 
+### NOTE: All commands should be ran in the scripts directory.
 ### 1) Setup SSH key
 - Run ```create_keypair.sh```
 ### 2) Setup VPC
@@ -76,9 +77,16 @@
         * Lambda Error Regex: ```.*Error 500.*```
         * Method Response Status: ```500```
         * Save.
-### 9) Deploy built program
+- Go through each resource and click on **ACTIONS** and **Enable CORS**. Enable CORS on each resource.
+- Click on **Actions** and **Deploy API**, create a new stage and name it ```beta```. Click Deploy
+- Go to **Stages** on the left drop down and select **beta**. Copy the **Invoke URL** and go to ```react-app/src/index.js```. Change ```axios.defaults.baseURL = 'https://ce4c9ztp47.execute-api.us-east-1.amazonaws.com/beta';``` to ```axios.defaults.baseURL = '[PLACE INVOKE URL HERE]';```
+### 9) AWS Amplify
+  * Create a web app using the react-app folder. If you choose to use the Github repo, choose the main branch and check ```Connecting a monorepo? Pick a folder.```. Enter for the root directory ```react-app```.
+### 10) Deploy built program
 - Run ```deploy.sh```
-### 10) Start up the servers
+### 11) Start up the servers
 - Run ```run.sh```
-### 11) If finished running servers, shut them down.
+### 12) If finished running servers, shut them down.
 - Run ```clean.sh```
+
+## Note: If you encounter a browser error with CORS, then go back to your API gateway. Go to the **Integration Response** of the offending method and verify that header mappings has the expected CORS headers. Do the same for the **Method Response**.
