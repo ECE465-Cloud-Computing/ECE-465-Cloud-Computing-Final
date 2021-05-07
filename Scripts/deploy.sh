@@ -11,17 +11,20 @@ echo "Running deploy.sh at ${NOW}" | tee -a ${LOGFILE}
 
 PROG="../single-node-multithreaded/target/single-node-multithreaded-0.0.1-jar-with-dependencies.jar"
 
+# Get last instance
 INSTANCES_IDS_ARRAY=$(echo $INSTANCES_IDS | tr " " "\n")
 for instance in $INSTANCES_IDS_ARRAY
 do
   instance_id=${instance}
 done
+# Assign elastic ip to last instance
 aws ec2 associate-address --instance-id ${instance_id} --allocation-id ${ELASTIC_ID} --allow-reassociation
 
 # get public IP addresses of the instances (in the public subnet)
 INSTANCES_IPS=$(aws ec2 describe-instances ${PREAMBLE} --filters Name=instance-state-name,Values=running Name=tag:${APP_TAG_NAME},Values=${APP_TAG_VALUE} --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text | tr '\n' ' ')
 echo "Public IP addresses: ${INSTANCES_IPS}" | tee -a ${LOGFILE}
 
+# Copy program over to the instances and also install Java on all of them
 for host in ${INSTANCES_IPS}
 do
 	echo "Copying over ${PROG} to ${USER}@${host}:~/ ..." | tee -a ${LOGFILE}
