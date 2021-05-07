@@ -25,3 +25,5 @@ User-based APIs handle requests that modify the user database on the backend. Th
 
 # Frontend
 The frontend is a simple web-application written in ReactJS. It has the following pages: register, login, search, and trips. The register and login pages allows the user to register for an account or login to their account, respectively. The search page allows the user to search for flights by inputing a starting and ending location as well as a filter (price or time). The search results are displayed on screen showing the best set of flights for each airline sorted by cost or time in ascending order. For each trip in the search results, users can click the save trip button to save it to their account. Users must be logged in to save trips. Finally, the trips pages displays the saved trips for the logged in user and can be cleared by clicking on the clear trips button. This page can only be accessed is the user is logged in.
+
+# Cloud Architechture
