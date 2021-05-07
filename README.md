@@ -10,7 +10,9 @@ The search algorithm is a distributed version of Dijstra's algorithm run on mult
 
 ## Coordinator
 
+
 ## Worker
+
 
 ## Multi-threaded Dijstras
 In order to achieve fast speed on the seach algorithm, each worker uses a multi-threaded version of Dijstra's to quickly process large graphs (over 1000 nodes in this application). In a multi-threaded implementation, the algorithm takes an adjacency matrix represented graph and break it up into subgroups of nodes; each of these subgroups will be assigned to a thread and processed. The threads all perform Dijkstra's on their respective chunks, updating the node weights locally, and putting the nodes into a global priority queue shared among the threads. Each thread is blocked upon its own completion of an iteration through the use of a CyclicBarrier in the Java concurrency library. Once all the threads finish executing, the shared priority queue is used to selected the global minimum node, which is then broadcasted to all threads to be used as the soruce node in the next iteration of the algorithm. The algorithm finishes once the end node has been visited. This information is stored in a global AtomicBoolean that is accessible by each thread, and updated at the end of each iteration. The algorithm outputs the shortest path from the source to the end node and the associated distance.
