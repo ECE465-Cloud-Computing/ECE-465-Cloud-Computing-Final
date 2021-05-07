@@ -9,7 +9,7 @@ LOGFILE="./deploy-${NOW}.log"
 echo "Deploying Full AWS infrastructure for ${APP_TAG_NAME}:${APP_TAG_VALUE}" | tee ${LOGFILE}
 echo "Running deploy.sh at ${NOW}" | tee -a ${LOGFILE}
 
-PROG="../single-node-multithreaded/target/single-node-multithreaded-0.0.1-jar-with-dependencies.jar"
+PROG="../backend/target/backend-0.0.1-jar-with-dependencies.jar"
 
 # Get last instance
 INSTANCES_IDS_ARRAY=$(echo $INSTANCES_IDS | tr " " "\n")
