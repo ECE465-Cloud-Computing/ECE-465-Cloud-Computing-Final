@@ -2,6 +2,7 @@
 
 source ./lab_config.sh
 
+# Set up role for s3
 echo "Running create-role"
 echo q | aws iam create-role --role-name ${S3_EC2_ROLE_NAME} --assume-role-policy-document file://./Policy/trust_policy.json
 echo "Running put-role-policy"
