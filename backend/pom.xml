@@ -10,17 +10,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>edu.cooper.ece465</groupId>
-  <artifactId>single-node-multithreaded</artifactId>
+  <artifactId>backend</artifactId>
   <version>0.0.1</version>
   <packaging>jar</packaging>
 
-  <name>single-node-multithreaded</name>
+  <name>backend</name>
   <url>http://ee.cooper.edu</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <artifactId>edu.cooper.ece465</artifactId>
-    <name>single-node-multithreaded</name>
+    <name>backend</name>
     <portNumber>1971</portNumber>
   </properties>
 

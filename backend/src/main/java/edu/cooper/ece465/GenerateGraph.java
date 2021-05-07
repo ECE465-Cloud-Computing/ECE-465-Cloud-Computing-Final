@@ -46,9 +46,9 @@ public class GenerateGraph {
                 timebufferedWriter.newLine();
             }
         } catch (NumberFormatException e) {
-          System.out.println("Proper Usage is: java GenerateGraph [Number of Source Nodes].\nA number was not found in " +
-                  "the input for source nodes.");
-          System.exit(2);
+            System.out.println("Proper Usage is: java GenerateGraph [Number of Source Nodes].\nA number was not found in " +
+                    "the input for source nodes.");
+            System.exit(2);
         }
         moneybufferedWriter.close();
         timebufferedWriter.close();

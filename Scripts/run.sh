@@ -10,7 +10,7 @@ LOGFILE="./run-${NOW}.log"
 echo "Running Full AWS infrastructure for ${APP_TAG_NAME}:${APP_TAG_VALUE}" | tee ${LOGFILE}
 echo "Running run.sh at ${NOW}" | tee -a ${LOGFILE}
 
-PROG="single-node-multithreaded-0.0.1-jar-with-dependencies.jar"
+PROG="backend-0.0.1-jar-with-dependencies.jar"
 
 # get public IP addresses of the instances (in the public subnet)
 INSTANCES_IPS=$(aws ec2 describe-instances ${PREAMBLE} --filters Name=instance-state-name,Values=running Name=tag:${APP_TAG_NAME},Values=${APP_TAG_VALUE} --query 'Reservations[*].Instances[*].[PublicIpAddress]' --output text | tr '\n' ' ')
