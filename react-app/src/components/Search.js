@@ -9,6 +9,7 @@ class Search extends Component {
             start: "",
             end: "",
             filter: "PRICE",
+            filterDisplay: "Price",
             results: [],
             startError: "",
             endError: "",
@@ -62,14 +63,29 @@ class Search extends Component {
                 })
                 .then((response) => {
                     // console.log(response.data);
-                    this.setState({
-                        results: response.data
-                    })
+                    if (response.data.errorMessage) {
+                        this.setState({
+                            responseError: "No trips found",
+                        });
+                    } else {
+                        if (this.state.filter === "PRICE") {
+                            this.setState({
+                                results: response.data,
+                                filterDisplay: "Price"
+                            })
+                        } else {
+                            this.setState({
+                                results: response.data,
+                                filterDisplay: "Time"
+                            })
+                        }
+
+                    }
                 })
                 .catch((error) => {
                     if (error.response) {
                         this.setState({
-                            responseError: error.response.data.error,
+                            responseError: "No trip found",
                         });
                     }
                 });
@@ -81,6 +97,7 @@ class Search extends Component {
             start,
             end,
             filter,
+            filterDisplay,
             results,
             startError,
             endError,
@@ -92,8 +109,8 @@ class Search extends Component {
         if (results.length !== 0) {
             resultsRender = results.map(result => {
                 let tripRender = '';
-                for (let i = 0; i < result.path.length; i++) {
-                    if (i === 0) {
+                for (let i = result.path.length - 1; i >= 0; i--) {
+                    if (i === result.path.length - 1) {
                         tripRender = tripRender + result.path[i];
                     } else {
                         tripRender = tripRender + " -> " + result.path[i];
@@ -106,7 +123,7 @@ class Search extends Component {
                         </h3>
                         {tripRender}
                         <h3>
-                            Cost: {result.cost}
+                            {filterDisplay}: {result.cost}
                         </h3>
                         <button onClick={() => {
                             const user = JSON.parse(localStorage.getItem("user"));
