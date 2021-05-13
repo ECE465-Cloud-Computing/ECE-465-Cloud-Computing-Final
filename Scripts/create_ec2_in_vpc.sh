@@ -33,4 +33,7 @@ aws ec2 run-instances ${PREAMBLE} --image-id ${AMI_ID} --count ${INSTANCES_COUNT
    --tag-specifications "ResourceType=instance,Tags=[{Key=${APP_TYPE},Value=${APP_TYPE_NAME}},{Key=${APP_TAG_NAME},Value=${APP_TAG_VALUE}}]" \
    "ResourceType=volume,Tags=[{Key=${APP_TYPE},Value=${APP_TYPE_NAME}},{Key=${APP_TAG_NAME},Value=${APP_TAG_VALUE}}]" | tee ${LOGFILE}
 
+# Wait 1 minute for ec2 instances to launch
+sleep 60
+
 exit 0
