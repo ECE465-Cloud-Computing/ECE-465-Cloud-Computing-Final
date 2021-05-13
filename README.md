@@ -46,3 +46,5 @@ S3 is used to store static flight table graphs. These graphs are pulled by EC2 w
 ## Amplify
 Amplify is used to deploy the frontend which is written in ReactJS. It deploys the React app from a github repository and handles requests by sending them to the API Gateway. 
 
+# Presentation Link
+https://youtu.be/hJAamyPa-Yk
