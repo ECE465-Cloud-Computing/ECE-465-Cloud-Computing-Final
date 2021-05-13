@@ -22,7 +22,7 @@
 - Go to the AWS Console and go to VPC. Click on **Elastic IPS** on the left **Virtual Private Cloud** dropdown.
 - Click on **Allocate Elastic IP Address** at the top right and **Allocate**.
 - Open up ```lab_config.sh``` and overwrite **ELASTIC_ID** and **ELASTIC_IP** with the details of the newly allocated Elastic ip. 
-### 8) Setup Gateway (Manually)
+### 8) Setup APIGateway (Manually since CLI did not give permissions for API Gateway)
 - Resource: /
     * GET - Method Execution
       * **Setup**
